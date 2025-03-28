@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PSP Guru Cards</title>
-  <script src="https://unpkg.com/tabletop@1.6.0/tabletop.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -70,43 +69,42 @@
 <body>
 
 <script>
-  window.onload = function () {
-    Tabletop.init({
-      key: '2PACX-1vTfVQmII6ctiEgx_iVhMyeHmm5KlRg9USqEhiLkEjxXqQ56Rh_HTyrzFLOTjOArEAQqrDfiJKPW-PnZ',
-      simpleSheet: true,
-      callback: function (data) {
-        data.forEach(row => {
-          const card = document.createElement('div');
-          card.className = 'guru-card';
+  fetch("https://opensheet.elk.sh/2PACX-1vTfVQmII6ctiEgx_iVhMyeHmm5KlRg9USqEhiLkEjxXqQ56Rh_HTyrzFLOTjOArEAQqrDfiJKPW-PnZ/Sheet1")
+    .then(res => res.json())
+    .then(data => {
+      data.forEach(row => {
+        const card = document.createElement('div');
+        card.className = 'guru-card';
 
-          const title = document.createElement('div');
-          title.className = 'country-name';
-          title.textContent = row['Country'];
-          card.appendChild(title);
+        const title = document.createElement('div');
+        title.className = 'country-name';
+        title.textContent = row['Country'];
+        card.appendChild(title);
 
-          Object.keys(row).forEach(key => {
-            if (key !== 'Country' && row[key] !== '') {
-              const method = document.createElement('div');
-              method.className = 'psp-method';
+        Object.keys(row).forEach(key => {
+          if (key !== 'Country' && row[key] !== '') {
+            const method = document.createElement('div');
+            method.className = 'psp-method';
 
-              const label = document.createElement('span');
-              label.textContent = key;
+            const label = document.createElement('span');
+            label.textContent = key;
 
-              const status = document.createElement('span');
-              status.className = 'status ' + (row[key] === 'Y' ? 'yes' : 'no');
-              status.textContent = row[key];
+            const status = document.createElement('span');
+            status.className = 'status ' + (row[key] === 'Y' ? 'yes' : 'no');
+            status.textContent = row[key];
 
-              method.appendChild(label);
-              method.appendChild(status);
-              card.appendChild(method);
-            }
-          });
-
-          document.body.appendChild(card);
+            method.appendChild(label);
+            method.appendChild(status);
+            card.appendChild(method);
+          }
         });
-      }
+
+        document.body.appendChild(card);
+      });
+    })
+    .catch(err => {
+      console.error('Error loading sheet data:', err);
     });
-  };
 </script>
 
 </body>
