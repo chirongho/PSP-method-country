@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PSP Guru Cards</title>
+  <script src="https://unpkg.com/tabletop@1.6.0/tabletop.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      padding: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .guru-card {
+      background: white;
+      border-left: 6px solid #4f46e5;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 1rem;
+      width: 300px;
+      transition: transform 0.2s;
+    }
+
+    .guru-card:hover {
+      transform: scale(1.03);
+    }
+
+    .country-name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #111827;
+    }
+
+    .psp-method {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95rem;
+    }
+
+    .psp-method:last-child {
+      border-bottom: none;
+    }
+
+    .status {
+      padding: 0.3rem 0.8rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .yes {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .no {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  window.onload = function () {
+    Tabletop.init({
+      key: '2PACX-1vTfVQmII6ctiEgx_iVhMyeHmm5KlRg9USqEhiLkEjxXqQ56Rh_HTyrzFLOTjOArEAQqrDfiJKPW-PnZ',
+      simpleSheet: true,
+      callback: function (data) {
+        data.forEach(row => {
+          const card = document.createElement('div');
+          card.className = 'guru-card';
+
+          const title = document.createElement('div');
+          title.className = 'country-name';
+          title.textContent = row['Country'];
+          card.appendChild(title);
+
+          Object.keys(row).forEach(key => {
+            if (key !== 'Country' && row[key] !== '') {
+              const method = document.createElement('div');
+              method.className = 'psp-method';
+
+              const label = document.createElement('span');
+              label.textContent = key;
+
+              const status = document.createElement('span');
+              status.className = 'status ' + (row[key] === 'Y' ? 'yes' : 'no');
+              status.textContent = row[key];
+
+              method.appendChild(label);
+              method.appendChild(status);
+              card.appendChild(method);
+            }
+          });
+
+          document.body.appendChild(card);
+        });
+      }
+    });
+  };
+</script>
+
+</body>
+</html>
